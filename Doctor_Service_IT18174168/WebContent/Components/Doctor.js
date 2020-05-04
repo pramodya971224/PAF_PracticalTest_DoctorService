@@ -114,3 +114,104 @@ $(document).on(
 					
 });
 
+//CLIENTMODEL
+function validateItemForm() {
+	// NIC
+	if ($("#docNic").val().trim() == "") {
+		return "Insert NIC.";
+	}
+	
+	var re =  /^[0-9]{9}[vVxX]$/;
+	var nic = $("#docNic").val().trim();
+	if (re.test(nic) == false) {
+		return "Please enter valid NIC Number";
+	}
+	
+	//fname
+	if ($("#fname").val().trim() == "") {
+		return "Insert First Name.";
+	}
+	var fname = $("#fname").val().trim();
+	if ($.isNumeric(fname)) {
+		return "Insert only characters for First Name";
+	}
+		
+	//lname
+	if ($("#lname").val().trim() == "") {
+		return "Insert Last Name.";
+	}
+	var lname = $("#lname").val().trim();
+	if ($.isNumeric(lname)) {
+		return "Insert only characters for Last Name";
+	}
+	
+	//DOB
+	if ($("#dob").val().trim() == "") {
+		return "Insert Date of Birth.";
+	}
+	
+	
+	// Doctor Email
+	if ($("#docEmail").val().trim() == "") {
+		return "Insert Email.";
+	}
+	//
+	var re = /^(?:[a-z0-9!#$%&amp;'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&amp;'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/;
+	var email = $("#docEmail").val().trim();
+	if (re.test(email) == false) {
+		return "Please enter valid email address";
+	}
+	
+	// GENDER  
+	if ($('input[name="rdoGender"]:checked').length === 0)  {   
+		return "Select gender.";  
+	}
+	
+	//license
+	if ($("#licen").val().trim() == "") {
+		return "Insert License Number.";
+	}
+	
+	var re = /^[D][0-9]{5}$/
+	var licen = $("#licen").val().trim()
+
+		if(re.test(licen)== false)
+		{
+		 return "Please enter valid License Number"	
+	}
+
+	// Specialization
+	if ($("#special").val() == "0")  {
+		return "Select Specialization.";
+	}
+
+	// Phone Number
+	if ($("#docPhone").val().trim() == "") {
+		return "Insert Phone Number.";
+	}
+	// Check for numeric value
+	var phone = $("#docPhone").val().trim();
+	if (!$.isNumeric(phone)) {
+		return "Insert a correct conatct number (don't insert characters)";
+	}
+	// check for length
+	var pattern = /^\d{10}$/;
+	if (!pattern.test(phone)) {
+		return "Contact number should have 10 numbers";
+	}
+	
+	// Doctor Charge
+	if ($("#docCharge").val().trim() == "") {
+		return "Insert Doctor Charge.";
+	}
+
+	// Check for numeric value
+	var charge = $("#docCharge").val().trim();
+	if (!$.isNumeric(charge)) {
+		return "Insert a numeric value for doctor charge";
+	}
+	$("#docCharge").val(parseFloat(charge).toFixed(2));
+	
+	return true;
+}
+
