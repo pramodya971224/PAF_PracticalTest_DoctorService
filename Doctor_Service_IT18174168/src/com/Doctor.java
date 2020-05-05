@@ -12,6 +12,7 @@ public class Doctor {
 
 	public String insertDoctor(String nic, String fname, String lname, String Dob, String age, String email, String gender, String liscen,
 			String special, String phone, String charge) {
+		
 		String output = "";
 
 		try (Connection con = DBConnector.getConnection()) {
@@ -19,7 +20,45 @@ public class Doctor {
 			if (con == null) {
 				return "Error while connecting to the database for inserting.";
 			}
-
+			
+			//Query for count AppId for duplicate date & time for same doctor and hospital
+			String checkQuery1="select count(doc_id) from doctor where doc_nic = ?";
+			String checkQuery2="select count(doc_id) from doctor where liscen_no = ?";
+			String checkQuery3="select count(doc_id) from doctor where doc_email = ?";
+			
+			PreparedStatement preparedstatement1 = con.prepareStatement(checkQuery1);
+			PreparedStatement preparedstatement2 = con.prepareStatement(checkQuery2);
+			PreparedStatement preparedstatement3 = con.prepareStatement(checkQuery3);
+			
+			preparedstatement1.setString(1,nic);
+			preparedstatement2.setString(1,liscen);
+			preparedstatement3.setString(1,email);
+			
+			ResultSet newresultset1 = preparedstatement1.executeQuery();
+			ResultSet newresultset2 = preparedstatement2.executeQuery();
+			ResultSet newresultset3 = preparedstatement3.executeQuery();
+			
+			newresultset1.next();
+			newresultset2.next();
+			newresultset3.next();
+			
+			//convert count Appointment ids to integer  
+			int value1 = Integer.parseInt(newresultset1.getObject(1).toString());
+			int value2 = Integer.parseInt(newresultset2.getObject(1).toString());
+			int value3 = Integer.parseInt(newresultset3.getObject(1).toString());
+			
+			if(value1 !=0)
+			{
+				output = "{\"status\":\"error\", \"data\":\"The NIC is already exist.\"}";
+				
+			}else if(value2 !=0){
+				
+				output = "{\"status\":\"error\", \"data\":\"The License Number is already exist.\"}";
+				
+			}else if(value3 !=0){
+				output = "{\"status\":\"error\", \"data\":\"The Gmail is already exist.\"}";
+				
+			}else {
 			// create a prepared statement
 			String query = " INSERT INTO doctor(`doc_id`, `doc_nic`, `doc_fname`, `doc_lname`, `DOB`, `age`, `doc_email`, `doc_gender`, `liscen_no`, `specialization`, `phone`, `doc_charge`)"
 					+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -52,6 +91,7 @@ public class Doctor {
 			String newDoc = readDoctors();
 			output = "{\"status\":\"success\", \"data\": \"" +
 					newDoc + "\"}";
+			}
 			
 		} catch (Exception e) {
 			output = "{\"status\":\"error\", \"data\":\"Error while inserting the Doctor.\"}";
@@ -70,7 +110,8 @@ public class Doctor {
 					 
 	        if (con == null)    
 	        {return "Error while connecting to the database for updating."; } 
-	 
+	        
+	        
 	        // create a prepared statement    
 	        String updatequery = "UPDATE doctor SET doc_nic =?, doc_fname =?, doc_lname =?, DOB =?, age =?, doc_email=?, doc_gender=?, liscen_no=?, specialization=?, phone=?, doc_charge=? WHERE doc_id=?"; 
 	 
