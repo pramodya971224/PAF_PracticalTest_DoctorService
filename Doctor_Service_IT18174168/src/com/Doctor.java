@@ -170,7 +170,7 @@ public class Doctor {
 				String charge = Double.toString(rs.getDouble("doc_charge"));
 				special = special.replace('+', ' ');
 				email = email.replaceAll("%40", "@");
-				
+				lname = lname.replace('+', ' ');
 
 				// Add into the html table
 				output += "<tr><td><input id='hidDocIDUpdate' name='hidDocIDUpdate' type='hidden'"

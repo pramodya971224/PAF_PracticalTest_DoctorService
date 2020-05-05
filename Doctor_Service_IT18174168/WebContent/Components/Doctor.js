@@ -135,6 +135,14 @@ function validateItemForm() {
 	if ($.isNumeric(fname)) {
 		return "Insert only characters for First Name";
 	}
+	
+	var re = /^[D][r][.]%[A-Za-z]$/;
+	var fname = $("#fname").val().trim();
+
+	if(re.test(fname)== false)
+	{
+		return "Please enter first name with valid type";	
+	}
 		
 	//lname
 	if ($("#lname").val().trim() == "") {
@@ -144,6 +152,7 @@ function validateItemForm() {
 	if ($.isNumeric(lname)) {
 		return "Insert only characters for Last Name";
 	}
+	
 	
 	//DOB
 	if ($("#dob").val().trim() == "") {
